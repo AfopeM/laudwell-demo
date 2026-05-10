@@ -34,7 +34,7 @@ export async function POST(request: NextRequest): Promise<Response> {
   // Step 1 — Validate
   const body = SubmissionSchema.safeParse(await request.json());
   if (!body.success) {
-    return Response.json({ error: body.error.flatten() }, { status: 400 });
+    return Response.json({ error: body.error.issues }, { status: 400 });
   }
 
   // Step 2 — Rate limit
