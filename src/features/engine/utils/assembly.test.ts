@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { generateReview, buildParts, validatePoolDepth } from '@/features/engine/utils/assembly';
-import { staffPool } from '@/features/engine/pools/staff';
-import { waitTimePool } from '@/features/engine/pools/waitTime';
-import { servicePool } from '@/features/engine/pools/service';
+import { peoplePool } from '@/features/engine/pools/people';
+import { experiencePool } from '@/features/engine/pools/experience';
+import { outcomePool } from '@/features/engine/pools/outcome';
 import { openingPool } from '@/features/engine/pools/opening';
 import { closingPool } from '@/features/engine/pools/closing';
 import type { Tone } from '@/features/engine/types';
@@ -12,17 +12,17 @@ import type { Tone } from '@/features/engine/types';
 // ---------------------------------------------------------------------------
 
 const Q1_OPTIONS = [
-  'The staff made me feel genuinely cared for',
-  'I was seen on time without a long wait',
-  'The treatment actually made a difference',
-  'The whole experience was smooth from start to finish',
+  'The people I dealt with were genuinely great',
+  'The work itself was done properly',
+  'They were completely upfront with me',
+  'The whole thing just felt easy',
 ] as const;
 
 const Q2_OPTIONS = [
-  'Professional and thorough',
-  'Warm, friendly, and welcoming',
-  'Fast without cutting corners',
-  "Honestly, just go. You won't regret it",
+  'Professional and reliable',
+  'Warm and easy to deal with',
+  'Fast and fair — no messing around',
+  "Honestly? Just use them. You won't regret it",
 ] as const;
 
 const ALL_COMBINATIONS = Q1_OPTIONS.flatMap((q1) => Q2_OPTIONS.map((q2) => ({ q1, q2 })));
@@ -46,13 +46,12 @@ describe('generateReview — all valid Q1/Q2 combinations', () => {
 describe('generateReview — output uniqueness', () => {
   it('produces 10 distinct strings for the same Q1/Q2 input', () => {
     const input = {
-      q1Answer: 'The staff made me feel genuinely cared for',
-      q2Answer: 'Professional and thorough',
+      q1Answer: 'The people I dealt with were genuinely great',
+      q2Answer: 'Professional and reliable',
     };
     const outputs = Array.from({ length: 10 }, () => generateReview(input));
     const unique = new Set(outputs);
-    // Allow a tiny tolerance (1 collision in 10) because pool depth is at minimum,
-    // but in practice all 10 should differ given 972+ possible combinations.
+    // Allow a tiny tolerance (1 collision in 10) given minimum pool depth.
     expect(unique.size).toBeGreaterThanOrEqual(9);
   });
 });
@@ -61,14 +60,10 @@ describe('generateReview — output uniqueness', () => {
 // Length variants — component count via buildParts (not string parsing)
 // ---------------------------------------------------------------------------
 
-// We use buildParts directly rather than parsing the assembled string.
-// Some phrases contain '. ' internally (e.g. "10/10 would go back. Just go...")
-// which makes split-on-period an unreliable counter.
-
 describe('generateReview — length variants', () => {
   const baseInput = {
-    q1Answer: 'The staff made me feel genuinely cared for',
-    q2Answer: 'Professional and thorough',
+    q1Answer: 'The people I dealt with were genuinely great',
+    q2Answer: 'Professional and reliable',
   };
 
   it('short produces exactly 3 components', () => {
@@ -93,8 +88,8 @@ describe('generateReview — length variants', () => {
 
 describe('generateReview — connector variants', () => {
   const input = {
-    q1Answer: 'The treatment actually made a difference',
-    q2Answer: 'Warm, friendly, and welcoming',
+    q1Answer: 'The work itself was done properly',
+    q2Answer: 'Warm and easy to deal with',
   };
 
   it('connector "also" inserts "Also,"', () => {
@@ -137,32 +132,32 @@ describe('pool depth — closing', () => {
   });
 });
 
-describe('pool depth — staff', () => {
-  const variants = Object.keys(staffPool);
+describe('pool depth — people', () => {
+  const variants = Object.keys(peoplePool);
   it.each(variants.flatMap((v) => TONES.map((t) => ({ v, t }))))(
-    'staff["$v"]["$t"] has at least 3 phrases',
+    'people["$v"]["$t"] has at least 3 phrases',
     ({ v, t }) => {
-      expect(staffPool[v][t].length).toBeGreaterThanOrEqual(MIN_DEPTH);
+      expect(peoplePool[v][t].length).toBeGreaterThanOrEqual(MIN_DEPTH);
     },
   );
 });
 
-describe('pool depth — waitTime', () => {
-  const variants = Object.keys(waitTimePool);
+describe('pool depth — experience', () => {
+  const variants = Object.keys(experiencePool);
   it.each(variants.flatMap((v) => TONES.map((t) => ({ v, t }))))(
-    'waitTime["$v"]["$t"] has at least 3 phrases',
+    'experience["$v"]["$t"] has at least 3 phrases',
     ({ v, t }) => {
-      expect(waitTimePool[v][t].length).toBeGreaterThanOrEqual(MIN_DEPTH);
+      expect(experiencePool[v][t].length).toBeGreaterThanOrEqual(MIN_DEPTH);
     },
   );
 });
 
-describe('pool depth — service', () => {
-  const variants = Object.keys(servicePool);
+describe('pool depth — outcome', () => {
+  const variants = Object.keys(outcomePool);
   it.each(variants.flatMap((v) => TONES.map((t) => ({ v, t }))))(
-    'service["$v"]["$t"] has at least 3 phrases',
+    'outcome["$v"]["$t"] has at least 3 phrases',
     ({ v, t }) => {
-      expect(servicePool[v][t].length).toBeGreaterThanOrEqual(MIN_DEPTH);
+      expect(outcomePool[v][t].length).toBeGreaterThanOrEqual(MIN_DEPTH);
     },
   );
 });

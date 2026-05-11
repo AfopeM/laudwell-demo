@@ -3,14 +3,14 @@ export type Length = 'short' | 'medium' | 'long';
 export type Connector = 'period' | 'also' | 'additionally' | 'whatsMore';
 
 export type PoolKey =
-  | 'staff.caring'
-  | 'staff.professional'
-  | 'staff.friendly'
-  | 'staff.efficient'
-  | 'waitTime.short'
-  | 'service.effective'
-  | 'service.smooth'
-  | 'service.enthusiastic';
+  | 'people.warm'
+  | 'people.professional'
+  | 'people.friendly'
+  | 'people.efficient'
+  | 'experience.transparent'
+  | 'experience.smooth'
+  | 'outcome.quality'
+  | 'outcome.enthusiastic';
 
 export interface EngineInput {
   q1Answer: string;

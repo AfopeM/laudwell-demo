@@ -1,9 +1,9 @@
 import type { Tone, Length, Connector, EngineInput, EngineOutput, PoolKey } from '../types';
 import { mapAnswersToPools } from './mapping';
 import { openingPool } from '../pools/opening';
-import { staffPool } from '../pools/staff';
-import { waitTimePool } from '../pools/waitTime';
-import { servicePool } from '../pools/service';
+import { peoplePool } from '../pools/people';
+import { experiencePool } from '../pools/experience';
+import { outcomePool } from '../pools/outcome';
 import { closingPool } from '../pools/closing';
 
 // ---------------------------------------------------------------------------
@@ -15,11 +15,11 @@ const LENGTHS: Length[] = ['short', 'medium', 'long'];
 const CONNECTORS: Connector[] = ['period', 'also', 'additionally', 'whatsMore'];
 
 // When the long length needs a third middle component that Q1/Q2 didn't cover,
-// we fall back to a representative key for that component type.
-const TYPE_FALLBACK: Record<'staff' | 'waitTime' | 'service', PoolKey> = {
-  staff: 'staff.professional',
-  waitTime: 'waitTime.short',
-  service: 'service.smooth',
+// fall back to a representative key for that component type.
+const TYPE_FALLBACK: Record<'people' | 'experience' | 'outcome', PoolKey> = {
+  people: 'people.professional',
+  experience: 'experience.smooth',
+  outcome: 'outcome.quality',
 };
 
 // ---------------------------------------------------------------------------
@@ -32,26 +32,25 @@ function pick<T>(arr: T[]): T {
 }
 
 /**
- * Derive the component type (staff / waitTime / service) from a pool key.
- * The prefix before the first dot determines the type.
+ * Derive the component type from a pool key prefix.
  */
-function getComponentType(poolKey: PoolKey): 'staff' | 'waitTime' | 'service' {
-  if (poolKey.startsWith('staff.')) return 'staff';
-  if (poolKey.startsWith('waitTime.')) return 'waitTime';
-  return 'service';
+function getComponentType(poolKey: PoolKey): 'people' | 'experience' | 'outcome' {
+  if (poolKey.startsWith('people.')) return 'people';
+  if (poolKey.startsWith('experience.')) return 'experience';
+  return 'outcome';
 }
 
 /**
  * For the long length, determine which component type is not yet represented
  * by the two Q-derived pool keys and return a fallback key for it.
  *
- * If Q1 and Q2 are the same type (e.g. both staff), the other two types are
- * both unrepresented — pick one at random.
+ * If Q1 and Q2 are the same type (e.g. both people), one of the other two
+ * types is picked at random.
  */
 function getThirdPoolKey(q1Pool: PoolKey, q2Pool: PoolKey): PoolKey {
   const q1Type = getComponentType(q1Pool);
   const q2Type = getComponentType(q2Pool);
-  const allTypes: Array<'staff' | 'waitTime' | 'service'> = ['staff', 'waitTime', 'service'];
+  const allTypes: Array<'people' | 'experience' | 'outcome'> = ['people', 'experience', 'outcome'];
 
   for (const type of allTypes) {
     if (type !== q1Type && type !== q2Type) {
@@ -59,7 +58,7 @@ function getThirdPoolKey(q1Pool: PoolKey, q2Pool: PoolKey): PoolKey {
     }
   }
 
-  // Q1 and Q2 share a type — both other types are uncovered; pick randomly.
+  // Q1 and Q2 share a type — pick randomly from the other two.
   const uncovered = allTypes.filter((t) => t !== q1Type);
   return TYPE_FALLBACK[pick(uncovered)];
 }
@@ -72,12 +71,12 @@ function getThirdPoolKey(q1Pool: PoolKey, q2Pool: PoolKey): PoolKey {
 function getPhrase(poolKey: PoolKey, tone: Tone): string {
   let toneMap: Record<Tone, string[]> | undefined;
 
-  if (poolKey.startsWith('staff.')) {
-    toneMap = staffPool[poolKey];
-  } else if (poolKey.startsWith('waitTime.')) {
-    toneMap = waitTimePool[poolKey];
-  } else if (poolKey.startsWith('service.')) {
-    toneMap = servicePool[poolKey];
+  if (poolKey.startsWith('people.')) {
+    toneMap = peoplePool[poolKey];
+  } else if (poolKey.startsWith('experience.')) {
+    toneMap = experiencePool[poolKey];
+  } else if (poolKey.startsWith('outcome.')) {
+    toneMap = outcomePool[poolKey];
   }
 
   if (!toneMap) throw new Error(`Missing pool for key: "${poolKey}"`);
@@ -89,7 +88,7 @@ function getPhrase(poolKey: PoolKey, tone: Tone): string {
 
 /**
  * Join an ordered array of phrases using the selected connector style.
- * "period" = each phrase separated by a space (phrases already end with a full stop).
+ * "period" = each phrase separated by a space (phrases already end with punctuation).
  * The other three styles insert a transition word before the closing phrase only.
  */
 function joinWithConnector(parts: string[], connector: Connector): string {
@@ -118,8 +117,8 @@ const MIN_DEPTH = 3;
 
 /**
  * Validate that every pool contains at least MIN_DEPTH phrases for every tone.
- * Call this at startup so under-filled pools are caught immediately rather than
- * surfacing as missing phrases at generation time.
+ * Call this at startup so under-filled pools surface immediately rather than
+ * at generation time.
  */
 export function validatePoolDepth(): void {
   const tones: Tone[] = ['warm', 'reassuring', 'conversational'];
@@ -140,11 +139,11 @@ export function validatePoolDepth(): void {
     }
   }
 
-  // Middle pools (keyed by pool key string)
+  // Middle pools
   const middlePools: Array<[string, Record<string, Record<Tone, string[]>>]> = [
-    ['staff', staffPool],
-    ['waitTime', waitTimePool],
-    ['service', servicePool],
+    ['people', peoplePool],
+    ['experience', experiencePool],
+    ['outcome', outcomePool],
   ];
 
   for (const [poolName, pool] of middlePools) {

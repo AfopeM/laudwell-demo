@@ -1,17 +1,17 @@
 import type { PoolKey, MappedPools } from '../types';
 
 const Q1_MAP: Record<string, PoolKey> = {
-  'The staff made me feel genuinely cared for': 'staff.caring',
-  'I was seen on time without a long wait': 'waitTime.short',
-  'The treatment actually made a difference': 'service.effective',
-  'The whole experience was smooth from start to finish': 'service.smooth',
+  'The people I dealt with were genuinely great': 'people.warm',
+  'The work itself was done properly': 'outcome.quality',
+  'They were completely upfront with me': 'experience.transparent',
+  'The whole thing just felt easy': 'experience.smooth',
 };
 
 const Q2_MAP: Record<string, PoolKey> = {
-  'Professional and thorough': 'staff.professional',
-  'Warm, friendly, and welcoming': 'staff.friendly',
-  'Fast without cutting corners': 'staff.efficient',
-  "Honestly, just go. You won't regret it": 'service.enthusiastic',
+  'Professional and reliable': 'people.professional',
+  'Warm and easy to deal with': 'people.friendly',
+  'Fast and fair — no messing around': 'people.efficient',
+  "Honestly? Just use them. You won't regret it": 'outcome.enthusiastic',
 };
 
 export function mapAnswersToPools(q1Answer: string, q2Answer: string): MappedPools {
