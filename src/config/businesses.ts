@@ -14,7 +14,7 @@ const businesses: businessConfig[] = [
   },
 ];
 
-export function getbusinessById(id: string): businessConfig {
+export function getBusinessById(id: string): businessConfig {
   const business = businesses.find((c) => c.id === id);
   if (!business) throw new Error(`No business found for id: "${id}"`);
   return business;
