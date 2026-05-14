@@ -1,12 +1,4 @@
-export type ScreenId =
-  | 'screen-0'
-  | 'screen-1'
-  | 'screen-2'
-  | 'screen-3'
-  | 'screen-4a'
-  | 'screen-4b'
-  | 'screen-5a'
-  | 'screen-5b';
+export type ScreenId = 'screen-0' | 'screen-1' | 'screen-2' | 'screen-3' | 'screen-4' | 'screen-5';
 
 export interface FlowState {
   sessionId: string;

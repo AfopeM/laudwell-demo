@@ -16,10 +16,8 @@ function getScreenId(pathname: string): ScreenId | null {
     'screen-1',
     'screen-2',
     'screen-3',
-    'screen-4a',
-    'screen-4b',
-    'screen-5a',
-    'screen-5b',
+    'screen-4',
+    'screen-5',
   ];
   return valid.includes(segment as ScreenId) ? (segment as ScreenId) : null;
 }

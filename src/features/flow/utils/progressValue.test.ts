@@ -7,10 +7,8 @@ const CASES: [ScreenId, number][] = [
   ['screen-1', 20],
   ['screen-2', 40],
   ['screen-3', 60],
-  ['screen-4a', 80],
-  ['screen-4b', 80],
-  ['screen-5a', 100],
-  ['screen-5b', 100],
+  ['screen-4', 80],
+  ['screen-5', 100],
 ];
 
 describe('progressValue', () => {
