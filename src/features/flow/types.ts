@@ -9,4 +9,5 @@ export interface FlowState {
   generatedText: string;
   isEdited: boolean;
   googleRedirectTaken: boolean | null;
+  finalSubmittedText: string | null;
 }

@@ -60,7 +60,7 @@ export default function Screen3({ params }: { params: Promise<{ businessId: stri
         onClick={() => {
           const snapped = snapRating(rating);
           setFlow({ starRating: snapped });
-          router.push(snapped >= 4 ? `/${businessId}/screen-4a` : `/${businessId}/screen-4b`);
+          router.push(`/${businessId}/screen-4`);
         }}
         className="w-full cursor-pointer rounded-2xl bg-stone-900 py-4 text-base font-medium text-white active:scale-[0.98]"
       >

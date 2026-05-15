@@ -13,6 +13,7 @@ const INITIAL_STATE: FlowState = {
   generatedText: '',
   isEdited: false,
   googleRedirectTaken: null,
+  finalSubmittedText: null,
 };
 
 // The context carries both the state and a way to partially update it.
