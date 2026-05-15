@@ -7,8 +7,8 @@ import { useFlow } from '@/features/flow/context';
 import { generateReview } from '@/features/engine/utils/assembly';
 import { slideTransition } from '@/features/flow/utils/transitions';
 import { submitFlow } from '@/features/flow/utils/submitFlow';
-
 import { wordCount } from '@/features/flow/utils/wordCount';
+import { detectEdit } from '@/features/flow/utils/isEdited';
 
 function WordCountFeedback({ text }: { text: string }) {
   const bucket = wordCount(text);
@@ -27,13 +27,15 @@ export default function Screen4High({ businessId }: { businessId: string }) {
   const { flow, setFlow } = useFlow();
   const router = useRouter();
 
-  // Lazy initializer — runs once when the component mounts, not on every render.
   const [localText, setLocalText] = React.useState(() =>
-    generateReview({ q1Answer: flow.q1Answer, q2Answer: flow.q2Answer }),
+    generateReview({
+      q1Answer: flow.q1Answer,
+      q2Answer: flow.q2Answer,
+    }),
   );
+
   const [isLoading, setIsLoading] = React.useState(true);
 
-  // Effect only touches an external system (the browser timer API). No setState in the body.
   React.useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 500);
     return () => clearTimeout(timer);
@@ -54,6 +56,7 @@ export default function Screen4High({ businessId }: { businessId: string }) {
           <span className="text-xs font-medium tracking-[0.2em] text-stone-400 uppercase">
             Your review
           </span>
+
           <p className="text-sm text-stone-500">
             Feel free to add anything personal — even one sentence makes your review stand out.
           </p>
@@ -76,6 +79,7 @@ export default function Screen4High({ businessId }: { businessId: string }) {
               q1Answer: flow.q1Answer,
               q2Answer: flow.q2Answer,
             });
+
             setFlow({ generatedText: regenerated });
             setLocalText(regenerated);
           }}
@@ -86,16 +90,23 @@ export default function Screen4High({ businessId }: { businessId: string }) {
 
         <button
           onClick={() => {
-            const edited = localText.trim() !== flow.generatedText.trim();
+            const edited = detectEdit(localText, flow.generatedText);
+
             setFlow({
               generatedText: localText,
               finalSubmittedText: localText.trim(),
               isEdited: edited,
             });
+
             submitFlow(
-              { ...flow, finalSubmittedText: localText.trim(), isEdited: edited },
+              {
+                ...flow,
+                finalSubmittedText: localText.trim(),
+                isEdited: edited,
+              },
               businessId,
             );
+
             router.push(`/${businessId}/screen-5`);
           }}
           className="w-full cursor-pointer rounded-2xl bg-stone-900 py-4 text-base font-medium text-white active:scale-[0.98]"
