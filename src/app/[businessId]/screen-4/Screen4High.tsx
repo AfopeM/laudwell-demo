@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { useFlow } from '@/features/flow/context';
 import { generateReview } from '@/features/engine/utils/assembly';
 import { slideTransition } from '@/features/flow/utils/transitions';
+import { submitFlow } from '@/features/flow/utils/submitFlow';
 
 import { wordCount } from '@/features/flow/utils/wordCount';
 
@@ -91,6 +92,10 @@ export default function Screen4High({ businessId }: { businessId: string }) {
               finalSubmittedText: localText.trim(),
               isEdited: edited,
             });
+            submitFlow(
+              { ...flow, finalSubmittedText: localText.trim(), isEdited: edited },
+              businessId,
+            );
             router.push(`/${businessId}/screen-5`);
           }}
           className="w-full cursor-pointer rounded-2xl bg-stone-900 py-4 text-base font-medium text-white active:scale-[0.98]"

@@ -5,14 +5,17 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useFlow } from '@/features/flow/context';
 import { slideTransition } from '@/features/flow/utils/transitions';
+import { submitFlow } from '@/features/flow/utils/submitFlow';
 
 export default function Screen4Low({ businessId }: { businessId: string }) {
-  const { setFlow } = useFlow();
+  const { flow, setFlow } = useFlow();
   const router = useRouter();
   const [feedback, setFeedback] = React.useState('');
 
   function handleSubmit() {
-    setFlow({ finalSubmittedText: feedback.trim() || null });
+    const finalText = feedback.trim() || null;
+    setFlow({ finalSubmittedText: finalText });
+    submitFlow({ ...flow, finalSubmittedText: finalText }, businessId);
     router.push(`/${businessId}/screen-5`);
   }
 
