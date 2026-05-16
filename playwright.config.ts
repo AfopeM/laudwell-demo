@@ -1,22 +1,27 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests/e2e', // all Playwright tests live here
-  timeout: 30_000, // 30s per test — generous for CI
-  retries: 1, // one auto-retry on flaky failures
+  testDir: './tests/e2e',
+  timeout: 60_000, // per-test timeout (was 30s)
+  retries: 1,
+  workers: 1, // THIS is the real fix — no parallel browser launches
+
+  webServer: {
+    command: 'pnpm dev',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
+  },
+
   use: {
     baseURL: 'http://localhost:3000',
-    viewport: { width: 390, height: 844 }, // iPhone 14 — spec says 390px
-    trace: 'on-first-retry', // records a trace only when something fails
+    viewport: { width: 390, height: 844 },
+    actionTimeout: 10_000,
   },
+
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
   ],
-  webServer: {
-    command: 'pnpm dev', // boots Next.js before the suite runs
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI, // reuse your running dev server locally
-  },
 });
