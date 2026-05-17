@@ -5,13 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useFlow } from '@/features/flow/context';
 import { slideTransition } from '@/features/flow/utils/transitions';
-
-const OPTIONS = [
-  'Professional and reliable',
-  'Warm and easy to deal with',
-  'Fast and fair — no messing around',
-  "Honestly? Just use them. You won't regret it",
-];
+import { SCREEN_2_OPTIONS, SCREEN_2_QUESTION } from '@/config/questions';
 
 export default function Screen2({ params }: { params: Promise<{ businessId: string }> }) {
   const { businessId } = React.use(params);
@@ -33,12 +27,12 @@ export default function Screen2({ params }: { params: Promise<{ businessId: stri
             Question 2 of 2
           </span>
           <h2 className="text-2xl leading-snug font-semibold tracking-tight text-stone-900">
-            How would you describe them to a friend?
+            {SCREEN_2_QUESTION}
           </h2>
         </div>
 
         <div className="flex flex-col gap-3">
-          {OPTIONS.map((option) => (
+          {SCREEN_2_OPTIONS.map((option) => (
             <button
               key={option}
               onClick={() => handleSelect(option)}

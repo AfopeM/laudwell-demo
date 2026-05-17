@@ -5,13 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useFlow } from '@/features/flow/context';
 import { slideTransition } from '@/features/flow/utils/transitions';
-
-const OPTIONS = [
-  'The people I dealt with were genuinely great',
-  'The work itself was done properly',
-  'They were completely upfront with me',
-  'The whole thing just felt easy',
-];
+import { SCREEN_1_OPTIONS, SCREEN_1_QUESTION } from '@/config/questions';
 
 export default function Screen1({ params }: { params: Promise<{ businessId: string }> }) {
   const { businessId } = React.use(params);
@@ -36,13 +30,13 @@ export default function Screen1({ params }: { params: Promise<{ businessId: stri
             Question 1 of 2
           </span>
           <h2 className="text-2xl leading-snug font-semibold tracking-tight text-stone-900">
-            What stood out most about your experience?
+            {SCREEN_1_QUESTION}
           </h2>
         </div>
 
         {/* Options */}
         <div className="flex flex-col gap-3">
-          {OPTIONS.map((option) => (
+          {SCREEN_1_OPTIONS.map((option) => (
             <button
               key={option}
               onClick={() => handleSelect(option)}
