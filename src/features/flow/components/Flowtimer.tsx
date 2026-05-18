@@ -4,7 +4,7 @@ import React from 'react';
 import { Clock2 } from 'lucide-react';
 import { useFlow } from '@/features/flow/context';
 
-export function FlowTimer() {
+export default function FlowTimer() {
   const { flow } = useFlow();
 
   // Lazy initializer runs once on mount — handles mid-flow navigation

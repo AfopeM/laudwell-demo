@@ -7,4 +7,6 @@ const EnvSchema = z.object({
   UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
 });
 
-export const env = EnvSchema.parse(process.env);
+export function getEnv() {
+  return EnvSchema.parse(process.env);
+}

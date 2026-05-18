@@ -6,15 +6,17 @@ test.describe('Screen 0 — Welcome', () => {
     await page.goto(`${BASE}/screen-0`);
 
     // Business name appears — pulled from businesses.ts at runtime
-    await expect(page.getByText('Demo business', { exact: false })).toBeVisible();
+    await expect(
+      page.getByText(`How was your ${BASE.replace('-', ' ')} experience?`, { exact: false }),
+    ).toBeVisible();
 
     // The CTA is present
-    await expect(page.getByRole('button', { name: 'Get started' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Begin Review' })).toBeVisible();
   });
 
-  test('tapping Get started navigates to screen-1', async ({ page }) => {
+  test('tapping Begin Review navigates to screen-1', async ({ page }) => {
     await page.goto(`${BASE}/screen-0`);
-    await page.getByRole('button', { name: 'Get started' }).click();
+    await page.getByRole('button', { name: 'Begin Review' }).click();
 
     // URL must change — flow state init is a side effect of this tap
     await expect(page).toHaveURL(`${BASE}/screen-1`);

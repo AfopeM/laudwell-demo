@@ -1,6 +1,6 @@
 import { Client } from '@notionhq/client';
-import { env } from '@/lib/schemas/env';
+import { getEnv } from '@/lib/schemas/env';
 
 export const notion = new Client({
-  auth: env.NOTION_TOKEN,
+  auth: getEnv().NOTION_TOKEN,
 });
