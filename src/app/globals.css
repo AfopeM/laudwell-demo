@@ -1,1 +1,16 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@theme {
+  /* ── Brand colours ── */
+  --color-cream: #f0ebe1;
+  --color-gold: #9c8560;
+  --color-gold-light: #b09978;
+  --color-gold-dark: #6b5a42;
+
+  /* ── Font stacks ──
+     The --font-playfair and --font-roboto CSS variables are injected at
+     runtime by next/font (see layout.tsx). Tailwind v4 resolves them
+     correctly because @theme entries become CSS custom properties too. */
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-roboto), system-ui, sans-serif;
+}
