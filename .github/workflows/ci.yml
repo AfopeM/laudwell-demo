@@ -39,3 +39,5 @@ jobs:
       - run: pnpm playwright test tests/e2e/screen-1.spec.ts
 
       - run: pnpm playwright test tests/e2e/screen-2.spec.ts
+
+      - run: pnpm playwright test tests/e2e/screen-3.spec.ts
