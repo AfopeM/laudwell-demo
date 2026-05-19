@@ -4,12 +4,14 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Star, ArrowRight } from 'lucide-react';
+import { useFlow } from '@/features/flow/context';
 import { slideTransition } from '@/features/flow/utils/transitions';
 import { snapRating } from '@/features/engine/utils/snapRating';
 import StyledHeading from '@/features/flow/components/StyledHeading';
 
 export default function Screen3({ params }: { params: Promise<{ businessId: string }> }) {
   const { businessId } = React.use(params);
+  const { setFlow } = useFlow();
   const router = useRouter();
 
   const [rating, setRating] = React.useState<number>(3);
@@ -30,7 +32,7 @@ export default function Screen3({ params }: { params: Promise<{ businessId: stri
       <div className="mt-8 flex flex-col items-center gap-8">
         {/* Label + heading */}
         <div className="flex flex-col items-center gap-2 text-center">
-          <span className="text-xs font-medium tracking-[0.22em] text-stone-400 uppercase">
+          <span className="text-xs font-light tracking-widest text-stone-400 uppercase">
             Rating
           </span>
           <h2 className="font-display max-w-md text-3xl leading-tight font-medium tracking-tight text-stone-900">
@@ -72,6 +74,7 @@ export default function Screen3({ params }: { params: Promise<{ businessId: stri
       {/* ── Continue button ── */}
       <button
         onClick={() => {
+          setFlow({ starRating: snapped });
           router.push(`/${businessId}/screen-4`);
         }}
         className="bg-gold-dark flex w-full cursor-pointer items-center justify-center gap-3 rounded-[28px] py-5 text-base font-medium text-white transition-colors active:scale-[0.98]"

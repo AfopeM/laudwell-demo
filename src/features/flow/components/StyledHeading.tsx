@@ -4,7 +4,7 @@ export default function StyledHeading({ text, word }: { text: string; word: stri
   return (
     <>
       {text.slice(0, i)}
-      <em style={{ color: '#9c8560', fontStyle: 'italic' }}>{word}</em>
+      <span className="font-display text-gold">{word}</span>
       {text.slice(i + word.length)}
     </>
   );
