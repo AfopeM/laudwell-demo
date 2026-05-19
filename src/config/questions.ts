@@ -7,7 +7,7 @@ export const SCREEN_1_OPTIONS = [
   'The whole thing just felt easy',
 ] as const;
 
-export const SCREEN_2_QUESTION = 'How would you describe them to a friend?';
+export const SCREEN_2_QUESTION = 'How would you describe the service to a friend?';
 
 export const SCREEN_2_OPTIONS = [
   'Professional and reliable',
