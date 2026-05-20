@@ -9,7 +9,7 @@ async function writeToNotion(data: Submission): Promise<void> {
   await notion.pages.create({
     parent: { database_id: process.env.NOTION_DATABASE_ID! },
     properties: {
-      'Session ID': { rich_text: [{ text: { content: data.sessionId } }] },
+      'Session ID': { title: [{ text: { content: data.sessionId } }] },
       'Business ID': { rich_text: [{ text: { content: data.businessId } }] },
       'Business Name': { rich_text: [{ text: { content: data.businessName } }] },
       'Q1 Answer': { rich_text: [{ text: { content: data.q1Answer } }] },
@@ -39,10 +39,13 @@ export async function POST(request: NextRequest): Promise<Response> {
 
   // Step 2 — Rate limit
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
-  const count = await redis.incr(`ratelimit:${ip}`);
-  if (count === 1) await redis.expire(`ratelimit:${ip}`, 3600);
-  if (count > 3) {
-    return Response.json({ error: 'Rate limit exceeded' }, { status: 429 });
+
+  if (process.env.NODE_ENV !== 'development') {
+    const count = await redis.incr(`ratelimit:${ip}`);
+    if (count === 1) await redis.expire(`ratelimit:${ip}`, 3600);
+    if (count > 3) {
+      return Response.json({ error: 'Rate limit exceeded' }, { status: 429 });
+    }
   }
 
   // Step 3 — Deduplication

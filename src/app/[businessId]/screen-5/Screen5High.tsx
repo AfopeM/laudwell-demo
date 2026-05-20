@@ -1,11 +1,12 @@
-// src/app/[businessId]/screen-5/Screen5High.tsx
 'use client';
 
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useFlow } from '@/features/flow/context';
+import { ArrowRight } from 'lucide-react';
 import { getBusinessById } from '@/config/businesses';
 import { slideTransition } from '@/features/flow/utils/transitions';
+import StyledHeading from '@/features/flow/components/StyledHeading';
 
 export default function Screen5High({ businessId }: { businessId: string }) {
   const { flow, setFlow } = useFlow();
@@ -28,7 +29,6 @@ export default function Screen5High({ businessId }: { businessId: string }) {
       setCount((prev) => {
         if (prev <= 1) {
           clearInterval(id);
-          handleRedirect();
           return 0;
         }
         return prev - 1;
@@ -36,33 +36,53 @@ export default function Screen5High({ businessId }: { businessId: string }) {
     }, 1000);
 
     return () => clearInterval(id);
-  }, [cancelled, handleRedirect]);
+  }, [cancelled]);
+
+  React.useEffect(() => {
+    if (count === 0 && !cancelled) {
+      handleRedirect();
+    }
+  }, [count, cancelled, handleRedirect]);
 
   return (
     <motion.div
       {...slideTransition}
-      className="flex flex-1 flex-col items-center justify-between px-6 py-16"
+      className="flex flex-1 flex-col items-center justify-between py-16"
     >
       <div className="flex flex-col items-center gap-3 text-center">
-        <span className="text-2xl">✓</span>
-        <h2 className="text-2xl font-semibold tracking-tight text-stone-900">
-          Your review has been copied
+        <div className="flex w-1/2 items-center justify-center gap-4">
+          <div className="h-0.25 flex-1 bg-stone-300" />
+          <span className="text-xs font-light tracking-widest text-stone-500 uppercase">
+            All done
+          </span>
+          <div className="h-0.25 flex-1 bg-stone-300" />
+        </div>
+        <h2 className="font-display max-w-md text-5xl leading-tight font-bold tracking-tight text-stone-900">
+          <StyledHeading text="Your review has been copied" word="copied" />
         </h2>
-        <p className="max-w-xs text-base text-stone-500">Just paste it when you get to Google.</p>
+        <p className="max-w-xs text-lg font-light text-stone-500">
+          Just paste it when you get to Google.
+        </p>
       </div>
 
       <div className="flex w-full flex-col gap-4">
         {!cancelled && (
-          <p className="text-center text-sm text-stone-400">
-            Heading to Google in {count} second{count !== 1 ? 's' : ''}...
-          </p>
+          <div className="mt-6 mb-28 flex justify-center">
+            <div className="flex items-center gap-2 rounded-2xl border border-stone-300/70 bg-white/50 px-4 py-2">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-stone-400" />
+              <span className="text-xs font-medium tracking-widest text-stone-500 uppercase">
+                Heading to Google in {count} second{count !== 1 ? 's' : ''}...
+              </span>
+            </div>
+          </div>
         )}
 
         <button
           onClick={handleRedirect}
-          className="w-full cursor-pointer rounded-2xl bg-stone-900 py-4 text-base font-medium text-white active:scale-[0.98]"
+          className="mx-auto flex w-full max-w-lg cursor-pointer items-center justify-center gap-4 rounded-2xl bg-stone-900 py-4 text-base font-medium text-white active:scale-[0.98]"
         >
           Take me there
+          <ArrowRight size={16} />
         </button>
 
         {!cancelled && (

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useCallback } from 'react';
 import type { FlowState } from './types';
 
 // The initial state — everything empty/zeroed until the flow populates it.
@@ -31,9 +31,9 @@ const FlowContext = createContext<FlowContextValue | null>(null);
 export function FlowProvider({ children }: { children: React.ReactNode }) {
   const [flow, setFlowState] = useState<FlowState>(INITIAL_STATE);
 
-  function setFlow(patch: Partial<FlowState>) {
+  const setFlow = useCallback((patch: Partial<FlowState>) => {
     setFlowState((prev) => ({ ...prev, ...patch }));
-  }
+  }, []); // empty deps — this function never needs to change
 
   return <FlowContext.Provider value={{ flow, setFlow }}>{children}</FlowContext.Provider>;
 }
