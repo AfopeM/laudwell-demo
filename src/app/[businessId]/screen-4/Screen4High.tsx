@@ -81,14 +81,17 @@ export default function Screen4High({ businessId }: { businessId: string }) {
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-3">
           {/* Section label */}
-          <span className="text-xs font-light tracking-widest text-stone-500 uppercase">
-            Review
-          </span>
+          <div className="flex items-center gap-3">
+            <div className="h-px w-4 bg-stone-300" />
+            <span className="text-xs font-light tracking-widest text-stone-400 uppercase">
+              Review
+            </span>
+          </div>
 
           {/* Heading */}
-          <h2 className="font-display text-4xl leading-tight font-bold tracking-tight text-stone-900">
+          <h1 className="font-display text-3xl leading-tight font-bold tracking-tight text-stone-900">
             <StyledHeading text="Your review is ready?" word="review" />
-          </h2>
+          </h1>
 
           {/* Subtext */}
           <p className="font-light text-stone-500">
@@ -138,7 +141,7 @@ export default function Screen4High({ businessId }: { businessId: string }) {
       {/* ── Submit CTA ── */}
       <button
         onClick={handleSubmit}
-        className="bg-gold-dark flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl py-4 text-base font-medium text-white active:scale-[0.98]"
+        className="bg-gold-dark flex min-h-[56px] w-full cursor-pointer items-center justify-center gap-2 rounded-2xl text-base font-medium text-white active:scale-[0.98]"
       >
         Submit Review
         <ArrowRight className="size-5" />

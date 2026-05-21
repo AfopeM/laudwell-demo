@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion';
 import { getBusinessById } from '@/config/businesses';
 import { slideTransition } from '@/features/flow/utils/transitions';
-import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import StyledHeading from '@/features/flow/components/StyledHeading';
 
@@ -11,37 +10,43 @@ export default function Screen5Low({ businessId }: { businessId: string }) {
   const business = getBusinessById(businessId);
 
   return (
-    <motion.div
-      {...slideTransition}
-      className="flex flex-1 flex-col items-center justify-between py-16"
-    >
-      <div className="flex flex-col items-center gap-3 text-center">
-        <div className="flex w-1/2 items-center justify-center gap-4">
-          <div className="h-0.25 flex-1 bg-stone-300" />
-          <span className="text-xs font-light tracking-widest text-stone-500 uppercase">
+    <motion.div {...slideTransition} className="pb-safe flex flex-1 flex-col justify-around gap-36">
+      {/* ── Top: confirmation message ── */}
+      <div className="flex flex-col items-center gap-4 pt-4">
+        {/* Divider label */}
+        <div className="flex items-center gap-3">
+          <div className="h-px w-8 bg-stone-300" />
+          <span className="shrink-0 text-xs font-light tracking-widest text-stone-400 uppercase">
             All done
           </span>
-          <div className="h-0.25 flex-1 bg-stone-300" />
+          <div className="h-px w-8 bg-stone-300" />
         </div>
-        <h2 className="font-display max-w-md text-4xl leading-tight font-bold tracking-tight text-stone-900">
+
+        {/* Heading */}
+        <h1 className="font-display text-center text-3xl leading-[1.15] font-bold tracking-tight text-stone-900">
           <StyledHeading text="Thank you for being honest with us." word="honest" />
-        </h2>
-        <p className="text-lg text-stone-500">Feedback like yours is how we get better.</p>
+        </h1>
+
+        {/* Subtext */}
+        <p className="text-center text-base leading-relaxed font-light text-stone-500">
+          Feedback like yours is how we get better. The team will see this directly.
+        </p>
       </div>
 
-      <div className="flex w-full flex-col gap-4">
-        <p className="text-center text-sm text-stone-400">
-          Changed your mind? You can still leave a Google review.
+      {/* ── Bottom: optional Google CTA ── */}
+      <div className="flex flex-col gap-3">
+        <p className="text-center text-sm font-light text-stone-400">
+          Changed your mind? You can still leave a public review.
         </p>
-        <Link
+        <a
           href={business.googleReviewUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="mx-auto flex w-full max-w-lg cursor-pointer items-center justify-center gap-4 rounded-2xl bg-stone-900 py-4 text-base font-medium text-white active:scale-[0.98]"
+          className="bg-gold-dark flex min-h-[56px] w-full cursor-pointer items-center justify-center gap-3 rounded-3xl text-base font-medium text-white active:scale-[0.98]"
         >
           Leave a Google review
           <ArrowRight size={16} />
-        </Link>
+        </a>
       </div>
     </motion.div>
   );

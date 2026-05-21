@@ -16,7 +16,7 @@ export default function Screen2({ params }: { params: Promise<{ businessId: stri
 
   function handleSelect(option: string) {
     setSelected(option);
-    setFlow({ q1Answer: option });
+    setFlow({ q2Answer: option });
     router.push(`/${businessId}/screen-3`);
   }
 

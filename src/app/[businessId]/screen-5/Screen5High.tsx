@@ -89,14 +89,14 @@ export default function Screen5High({ businessId }: { businessId: string }) {
       {/* ── Heading block ── */}
       <div className="flex flex-col items-center gap-3 text-center">
         <div className="flex w-1/2 items-center justify-center gap-4">
-          <div className="h-0.25 flex-1 bg-stone-300" />
+          <div className="h-px w-8 bg-stone-300" />
           <span className="text-xs font-light tracking-widest text-stone-500 uppercase">
             All done
           </span>
-          <div className="h-0.25 flex-1 bg-stone-300" />
+          <div className="h-px w-8 bg-stone-300" />
         </div>
 
-        <h2 className="font-display max-w-md text-5xl leading-tight font-bold tracking-tight text-stone-900">
+        <h2 className="font-display max-w-md text-3xl leading-tight font-bold tracking-tight text-stone-900">
           <StyledHeading text="Your review has been copied" word="copied" />
         </h2>
 
@@ -120,7 +120,7 @@ export default function Screen5High({ businessId }: { businessId: string }) {
 
         <button
           onClick={handleManualRedirect}
-          className="mx-auto flex w-full max-w-lg cursor-pointer items-center justify-center gap-4 rounded-2xl bg-stone-900 py-4 text-base font-medium text-white active:scale-[0.98]"
+          className="mx-auto flex min-h-[56px] w-full max-w-lg cursor-pointer items-center justify-center gap-4 rounded-3xl bg-stone-900 text-base font-medium text-white active:scale-[0.98]"
         >
           Take me there
           <ArrowRight size={16} />
