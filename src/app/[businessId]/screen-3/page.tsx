@@ -17,46 +17,43 @@ export default function Screen3({ params }: { params: Promise<{ businessId: stri
   const [rating, setRating] = React.useState<number>(3);
 
   const snapped = snapRating(rating);
-
-  // (rating - min) / (max - min) * 100
   const fillPercent = ((rating - 1) / 4) * 100;
 
-  const starRows = [
-    [1, 2, 3],
-    [4, 5],
-  ];
-
   return (
-    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-between py-8">
+    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-center gap-32">
       {/* ── Body ── */}
-      <div className="mt-8 flex flex-col items-center gap-8">
+      <div className="flex flex-col items-center gap-6">
         {/* Label + heading */}
-        <div className="flex flex-col items-center gap-2 text-center">
-          <span className="text-xs font-light tracking-widest text-stone-400 uppercase">
-            Rating
-          </span>
-          <h2 className="font-display max-w-md text-3xl leading-tight font-medium tracking-tight text-stone-900">
+        <div className="flex w-full flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <div className="h-px w-4 bg-stone-300" />
+            <span className="text-xs font-light tracking-widest text-stone-400 uppercase">
+              Rating
+            </span>
+          </div>
+          <h1 className="font-display text-[28px] leading-[1.15] font-bold tracking-tight text-stone-900">
             <StyledHeading text="How would you rate your experience?" word="rate" />
-          </h2>
+          </h1>
         </div>
 
-        {/* Stars — 3 on top row, 2 on bottom row */}
-        <div className="mb-12 flex flex-col items-center gap-3">
-          {starRows.map((row, rowIdx) => (
-            <div key={rowIdx} className="flex items-center gap-3">
-              {row.map((star) => (
-                <Star
-                  key={star}
-                  size={80}
-                  fill={star <= snapped ? '#e6c02aff' : 'transparent'}
-                  stroke={star <= snapped ? '#e6c02aff' : '#c5bfaf'}
-                  strokeWidth={1.4}
-                />
-              ))}
-            </div>
+        {/* Stars */}
+        <div className="flex items-center gap-1">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <Star
+              key={star}
+              size={52}
+              fill={star <= snapped ? '#e6c02a' : 'transparent'}
+              stroke={star <= snapped ? '#e6c02a' : '#c5bfaf'}
+              strokeWidth={1.4}
+              className="transition-colors duration-100"
+            />
           ))}
         </div>
 
+        {/* Current rating label */}
+        <p className="text-[13px] font-light tracking-wide text-stone-400">{snapped} out of 5</p>
+
+        {/* Slider */}
         <input
           type="range"
           min={1}
@@ -67,7 +64,18 @@ export default function Screen3({ params }: { params: Promise<{ businessId: stri
           style={{
             background: `linear-gradient(to right, #1c1917 0%, #1c1917 ${fillPercent}%, #d6d3d1 ${fillPercent}%, #d6d3d1 100%)`,
           }}
-          className="[&::-webkit-slider-thumb]:bg-gold-dark w-2/3 cursor-pointer appearance-none rounded-full [&::-webkit-slider-runnable-track]:h-[12px] [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-thumb]:mt-[-6px] [&::-webkit-slider-thumb]:h-[24px] [&::-webkit-slider-thumb]:w-[24px] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full"
+          className={[
+            'w-full cursor-pointer appearance-none rounded-full',
+            '[&::-webkit-slider-runnable-track]:h-[14px] [&::-webkit-slider-runnable-track]:rounded-full',
+            '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full',
+            '[&::-webkit-slider-thumb]:h-[32px] [&::-webkit-slider-thumb]:w-[32px]',
+            '[&::-webkit-slider-thumb]:mt-[-9px]',
+            '[&::-webkit-slider-thumb]:bg-gold-dark',
+            // Firefox
+            '[&::-moz-range-thumb]:h-[32px] [&::-moz-range-thumb]:w-[32px]',
+            '[&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0',
+            '[&::-moz-range-thumb]:bg-gold-dark',
+          ].join(' ')}
         />
       </div>
 
@@ -77,7 +85,7 @@ export default function Screen3({ params }: { params: Promise<{ businessId: stri
           setFlow({ starRating: snapped });
           router.push(`/${businessId}/screen-4`);
         }}
-        className="bg-gold-dark flex w-full cursor-pointer items-center justify-center gap-3 rounded-[28px] py-5 text-base font-medium text-white transition-colors active:scale-[0.98]"
+        className="bg-gold-dark flex min-h-[60px] w-full cursor-pointer items-center justify-center gap-3 rounded-[28px] text-base font-medium text-white transition-colors active:scale-[0.98]"
       >
         Continue
         <ArrowRight className="size-5" />

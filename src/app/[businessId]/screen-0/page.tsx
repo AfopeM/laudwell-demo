@@ -8,6 +8,7 @@ import { ArrowRight } from 'lucide-react';
 import { useFlow } from '@/features/flow/context';
 import { getBusinessById } from '@/config/businesses';
 import { slideTransition } from '@/features/flow/utils/transitions';
+import StyledHeading from '@/features/flow/components/StyledHeading';
 import FlowTimer from '@/features/flow/components/Flowtimer';
 
 export default function Screen0({ params }: { params: Promise<{ businessId: string }> }) {
@@ -25,61 +26,56 @@ export default function Screen0({ params }: { params: Promise<{ businessId: stri
   }
 
   return (
-    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-between">
+    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-between pt-6">
       {/* ── Top bar ── */}
-      <div className="flex items-center justify-between py-4">
-        <div className="text-xs font-light tracking-widest text-stone-500 uppercase">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-light tracking-widest text-stone-500 uppercase">
           {business.name}
-        </div>
-
+        </span>
         <FlowTimer />
       </div>
 
-      {/* ── Body ── */}
-      <div>
-        {/* Logo + decorative rings */}
-        <div className="relative flex justify-center">
-          <div className="absolute top-1/2 h-96 w-96 -translate-y-1/2 animate-pulse rounded-full border border-stone-400/20" />
-          <div className="absolute top-1/2 h-72 w-72 -translate-y-1/2 animate-pulse rounded-full border border-stone-400/20" />
-          <div className="absolute top-1/2 h-48 w-48 -translate-y-1/2 animate-pulse rounded-full border border-stone-400/20" />
-          <div className="relative z-10 flex h-42 w-42 items-center justify-center">
-            <Image
-              fill
-              alt={business.name}
-              src={business.logoPath}
-              className="object-contain"
-              sizes="192px"
-            />
+      <div className="flex flex-1 flex-col items-center justify-center gap-10">
+        {/* ── Body — centred, no fixed margins that fight short screens ── */}
+        <div className="flex flex-col items-center gap-4">
+          {/* Logo + decorative rings */}
+          <div className="relative flex h-28 w-28 items-center justify-center">
+            <div className="absolute inset-0 scale-[1.45] animate-pulse rounded-full border border-stone-400/20" />
+            <div className="absolute inset-0 scale-[1.2] animate-pulse rounded-full border border-stone-400/20" />
+            <div className="relative z-10 h-full w-full">
+              <Image
+                fill
+                sizes="112px"
+                alt={business.name}
+                src={business.logoPath}
+                className="object-contain"
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Main heading */}
-        <div className="px-2 text-center">
-          <h1 className="font-display text-5xl font-medium tracking-tight text-stone-900">
-            How was your{' '}
-            <span className="text-gold block capitalize italic lg:inline">{business.name}</span>{' '}
-            experience ?
+          {/* Heading */}
+          <h1 className="font-display max-w-xs text-center text-[28px] leading-[1.15] font-bold tracking-tight text-stone-900">
+            <StyledHeading text="How was your experience?" word="experience" />
           </h1>
-        </div>
 
-        {/* Subtext */}
-        <p className="mx-auto mt-4 max-w-md px-2 text-center leading-relaxed font-light text-stone-500">
-          We would love to hear about how we did. Your feedback helps us grow and serve you better.
-        </p>
+          {/* Subtext */}
+          <p className="max-w-xs text-center text-[15px] leading-relaxed font-light text-stone-500">
+            We&apos;d love to hear how we did. Your feedback helps us grow.
+          </p>
 
-        {/* Time badge */}
-        <div className="mt-6 mb-28 flex justify-center">
+          {/* Time badge */}
           <div className="flex items-center gap-2 rounded-2xl border border-stone-300/70 bg-white/50 px-4 py-2">
             <span className="h-2 w-2 animate-pulse rounded-full bg-stone-400" />
-            <span className="text-xs font-medium tracking-widest text-stone-500 uppercase">
+            <span className="text-[11px] font-medium tracking-widest text-stone-500 uppercase">
               Takes less than 90 seconds
             </span>
           </div>
         </div>
 
+        {/* ── CTA pinned to bottom ── */}
         <button
           onClick={handleStart}
-          className="bg-gold-dark hover:bg-gold-light mb-12 flex w-full cursor-pointer items-center justify-center gap-3 rounded-[28px] py-5 font-medium tracking-wide text-white transition-colors ease-in-out active:scale-[0.97]"
+          className="bg-gold-dark hover:bg-gold-dark/90 flex min-h-[60px] w-full cursor-pointer items-center justify-center gap-3 rounded-[28px] font-medium tracking-wide text-white transition-colors ease-in-out active:scale-[0.97]"
         >
           Begin Review
           <ArrowRight className="size-5" />

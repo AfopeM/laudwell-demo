@@ -13,7 +13,7 @@ test.describe('Screen 1 — Question 1', () => {
   test('renders the question label and heading', async ({ page }) => {
     await goToScreen1(page);
     await expect(page.getByText('Question 1 of 2')).toBeVisible();
-    await expect(page.locator('h2')).toContainText(SCREEN_1_QUESTION);
+    await expect(page.locator('h1')).toContainText(SCREEN_1_QUESTION);
   });
 
   test('renders all four option cards', async ({ page }) => {

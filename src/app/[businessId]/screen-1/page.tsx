@@ -21,48 +21,48 @@ export default function Screen1({ params }: { params: Promise<{ businessId: stri
   }
 
   return (
-    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-between pt-12 pb-8">
-      {/* Top content block */}
-      <div className="flex flex-col gap-10">
-        <div className="flex flex-col gap-5">
-          <div className="flex items-center gap-2.5">
-            <div className="h-px w-5 bg-stone-400/50" />
-            <span className="text-xs font-light tracking-widest text-stone-400 uppercase">
-              Question 1 of 2
-            </span>
-          </div>
-
-          {/* Heading */}
-          <h2 className="font-display text-4xl font-bold tracking-tight text-stone-900">
-            <StyledHeading text={SCREEN_1_QUESTION} word="experience" />
-          </h2>
+    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-center gap-4">
+      {/* Header block */}
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <div className="h-px w-4 bg-stone-300" />
+          <span className="text-xs font-light tracking-widest text-stone-400 uppercase">
+            Question 1 of 2
+          </span>
         </div>
 
-        {/* Option cards */}
-        <div className="flex flex-col gap-4">
-          {SCREEN_1_OPTIONS.map((option) => {
-            const isSelected = selected === option;
-            return (
-              <button
-                key={option}
-                onClick={() => handleSelect(option)}
+        <h1 className="font-display text-[28px] leading-[1.15] font-bold tracking-tight text-stone-900">
+          <StyledHeading text={SCREEN_1_QUESTION} word="experience" />
+        </h1>
+      </div>
+
+      {/* Option cards */}
+      <div className="flex flex-col gap-3">
+        {SCREEN_1_OPTIONS.map((option) => {
+          const isSelected = selected === option;
+          return (
+            <button
+              key={option}
+              onClick={() => handleSelect(option)}
+              className={[
+                'flex w-full cursor-pointer items-center gap-4 rounded-3xl border px-5 text-left transition-all duration-150 active:scale-[0.98]',
+                'min-h-[72px]',
+                isSelected
+                  ? 'border-stone-800 bg-stone-900 text-white shadow-md'
+                  : 'border-stone-200 bg-white/70 text-stone-700 shadow-sm hover:border-stone-300 hover:bg-white',
+              ].join(' ')}
+            >
+              {/* Indicator dot */}
+              <span
                 className={[
-                  'flex cursor-pointer items-center gap-4 rounded-[36px] border border-stone-300/70 bg-white/50 px-4 py-8 text-left shadow-sm transition-colors duration-100 hover:bg-white/80',
-                  isSelected ? 'bg-stone-900' : 'bg-white text-stone-700 active:bg-stone-50',
+                  'h-5 w-5 shrink-0 rounded-full border transition-colors duration-150',
+                  isSelected ? 'border-white/40 bg-white/20' : 'border-stone-200 bg-stone-300',
                 ].join(' ')}
-              >
-                {/* Filled circle */}
-                <span
-                  className={[
-                    'h-6 w-6 shrink-0 rounded-full border border-stone-300/70 bg-white',
-                    isSelected ? 'bg-white/25' : 'bg-gold-dark',
-                  ].join(' ')}
-                />
-                <span className="text-sm font-light tracking-wide">{option}</span>
-              </button>
-            );
-          })}
-        </div>
+              />
+              <span className="text-[15px] leading-snug font-light tracking-wide">{option}</span>
+            </button>
+          );
+        })}
       </div>
     </motion.div>
   );
