@@ -34,9 +34,12 @@ export default function BusinessLayoutShell({
 
   if (screenId === 'screen-0') {
     return (
-      <div className="bg-cream flex h-dvh flex-col overflow-hidden px-12">
+      <div className="bg-cream flex h-dvh flex-col px-12">
         <AnimatePresence mode="wait">
-          <div key={pathname} className="flex flex-1 flex-col overflow-hidden font-sans">
+          <div
+            key={pathname}
+            className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto font-sans"
+          >
             {children}
           </div>
         </AnimatePresence>
@@ -46,10 +49,13 @@ export default function BusinessLayoutShell({
   }
 
   return (
-    <div className="bg-cream flex h-dvh flex-col overflow-hidden px-12">
+    <div className="bg-cream flex h-dvh flex-col px-12">
       <ProgressBar value={progress} />
       <AnimatePresence mode="wait">
-        <div key={pathname} className="flex flex-1 flex-col overflow-hidden font-sans">
+        <div
+          key={pathname}
+          className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto font-sans"
+        >
           {children}
         </div>
       </AnimatePresence>

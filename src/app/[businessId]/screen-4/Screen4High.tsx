@@ -19,12 +19,6 @@ export default function Screen4High({ businessId }: { businessId: string }) {
   const { flow, setFlow } = useFlow();
   const router = useRouter();
 
-  React.useEffect(() => {
-    if (!flow.q1Answer || !flow.q2Answer) {
-      router.replace(`/${businessId}/screen-0`);
-    }
-  }, [flow.q1Answer, flow.q2Answer, businessId, router]);
-
   const [localText, setLocalText] = React.useState(() => {
     // Only generate if we actually have valid answers
     if (!flow.q1Answer || !flow.q2Answer) return '';
@@ -82,7 +76,7 @@ export default function Screen4High({ businessId }: { businessId: string }) {
   const wordCount = countWords(localText);
 
   return (
-    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-between py-10">
+    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-center gap-4">
       {/* ── Header ── */}
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-3">
@@ -144,7 +138,7 @@ export default function Screen4High({ businessId }: { businessId: string }) {
       {/* ── Submit CTA ── */}
       <button
         onClick={handleSubmit}
-        className="bg-gold-dark mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl py-4 text-base font-medium text-white active:scale-[0.98]"
+        className="bg-gold-dark flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl py-4 text-base font-medium text-white active:scale-[0.98]"
       >
         Submit Review
         <ArrowRight className="size-5" />

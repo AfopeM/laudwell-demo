@@ -18,12 +18,6 @@ export default function Screen4Low({ businessId }: { businessId: string }) {
   const router = useRouter();
   const [feedback, setFeedback] = React.useState('');
 
-  React.useEffect(() => {
-    if (!flow.q1Answer || !flow.q2Answer) {
-      router.replace(`/${businessId}/screen-0`);
-    }
-  }, [flow.q1Answer, flow.q2Answer, businessId, router]);
-
   function handleSubmit() {
     const finalText = feedback.trim() || null;
     setFlow({ finalSubmittedText: finalText });
