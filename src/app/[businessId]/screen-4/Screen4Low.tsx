@@ -38,15 +38,7 @@ export default function Screen4Low({ businessId }: { businessId: string }) {
       {/* ── Scrollable content area ── */}
       <div className="overflow-y-auto overscroll-contain">
         <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-3">
-            {/* Section label */}
-            {/* <div className="flex items-center gap-3">
-              <div className="h-px w-4 bg-stone-300" />
-              <span className="text-xs font-light tracking-widest text-stone-400 uppercase">
-                Feedback
-              </span>
-            </div> */}
-
+          <div className="mb-4 flex flex-col gap-3">
             <h1 className="font-display text-3xl leading-tight font-bold tracking-tight text-stone-900">
               <StyledHeading text="Your feedback matters to us." word="feedback" />
             </h1>
@@ -87,7 +79,7 @@ export default function Screen4Low({ businessId }: { businessId: string }) {
 
       <button
         onClick={handleSubmit}
-        className="bg-gold-dark flex min-h-[56px] w-full cursor-pointer items-center justify-center gap-2 rounded-2xl text-base font-medium text-white active:scale-[0.98]"
+        className="bg-gold-dark hover:bg-gold-dark/90 flex min-h-[56px] w-full cursor-pointer items-center justify-center gap-2 rounded-2xl text-base font-medium text-white active:scale-[0.98]"
       >
         Submit Feedback
         <ArrowRight className="size-5" />

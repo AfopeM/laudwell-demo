@@ -26,7 +26,7 @@ export default function Screen0({ params }: { params: Promise<{ businessId: stri
   }
 
   return (
-    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-between pt-6">
+    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-between">
       {/* ── Top bar ── */}
       <div className="flex items-center justify-between">
         <span className="text-xs font-light tracking-widest text-stone-500 uppercase">
@@ -35,7 +35,7 @@ export default function Screen0({ params }: { params: Promise<{ businessId: stri
         <FlowTimer />
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-10">
+      <div className="flex flex-1 flex-col items-center justify-center gap-12">
         {/* ── Body — centred, no fixed margins that fight short screens ── */}
         <div className="flex flex-col items-center gap-4">
           {/* Logo + decorative rings */}

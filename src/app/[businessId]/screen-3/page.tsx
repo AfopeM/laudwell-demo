@@ -20,24 +20,16 @@ export default function Screen3({ params }: { params: Promise<{ businessId: stri
   const fillPercent = ((rating - 1) / 4) * 100;
 
   return (
-    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-center gap-32">
+    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-center gap-36">
       {/* ── Body ── */}
       <div className="flex flex-col items-center gap-6">
-        {/* Label + heading */}
-        <div className="flex w-full flex-col gap-3">
-          <div className="flex items-center gap-3">
-            <div className="h-px w-4 bg-stone-300" />
-            <span className="text-xs font-light tracking-widest text-stone-400 uppercase">
-              Rating
-            </span>
-          </div>
-          <h1 className="font-display text-[28px] leading-[1.15] font-bold tracking-tight text-stone-900">
-            <StyledHeading text="How would you rate your experience?" word="rate" />
-          </h1>
-        </div>
+        {/* Heading */}
+        <h1 className="font-display text-3xl leading-[1.15] font-bold tracking-tight text-stone-900">
+          <StyledHeading text="How would you rate your experience?" word="rate" />
+        </h1>
 
         {/* Stars */}
-        <div className="flex items-center gap-1">
+        <div className="my-4 flex items-center gap-1">
           {[1, 2, 3, 4, 5].map((star) => (
             <Star
               key={star}
@@ -51,7 +43,7 @@ export default function Screen3({ params }: { params: Promise<{ businessId: stri
         </div>
 
         {/* Current rating label */}
-        <p className="text-[13px] font-light tracking-wide text-stone-400">{snapped} out of 5</p>
+        <p className="text-sm font-light tracking-wide text-stone-400">{snapped} out of 5</p>
 
         {/* Slider */}
         <input

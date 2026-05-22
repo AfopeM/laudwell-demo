@@ -79,15 +79,7 @@ export default function Screen4High({ businessId }: { businessId: string }) {
     <motion.div {...slideTransition} className="flex flex-1 flex-col justify-center gap-4">
       {/* ── Header ── */}
       <div className="flex flex-col gap-5">
-        <div className="flex flex-col gap-3">
-          {/* Section label */}
-          <div className="flex items-center gap-3">
-            <div className="h-px w-4 bg-stone-300" />
-            <span className="text-xs font-light tracking-widest text-stone-400 uppercase">
-              Review
-            </span>
-          </div>
-
+        <div className="mb-4 flex flex-col gap-3">
           {/* Heading */}
           <h1 className="font-display text-3xl leading-tight font-bold tracking-tight text-stone-900">
             <StyledHeading text="Your review is ready?" word="review" />
@@ -95,8 +87,8 @@ export default function Screen4High({ businessId }: { businessId: string }) {
 
           {/* Subtext */}
           <p className="font-light text-stone-500">
-            We helped generate a review draft based on the options you selected. Feel free to change
-            it up and add anything personal.
+            We helped generate a review draft based on the options you selected. Feel free to add
+            anything personal.
           </p>
         </div>
 

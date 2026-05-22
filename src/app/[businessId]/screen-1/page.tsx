@@ -21,7 +21,7 @@ export default function Screen1({ params }: { params: Promise<{ businessId: stri
   }
 
   return (
-    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-center gap-4">
+    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-center gap-8">
       {/* Header block */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-3">

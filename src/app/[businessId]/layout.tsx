@@ -10,7 +10,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { businessId } = await params;
   const business = getBusinessById(businessId);
-  return { title: `${business.name} — LaudWell` };
+  return {
+    title: `${business.name
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ')} — LaudWell`,
+  };
 }
 
 export default async function BusinessLayout({

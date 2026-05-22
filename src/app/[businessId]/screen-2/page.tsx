@@ -21,13 +21,13 @@ export default function Screen2({ params }: { params: Promise<{ businessId: stri
   }
 
   return (
-    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-center gap-4">
+    <motion.div {...slideTransition} className="flex flex-1 flex-col justify-center gap-8">
       {/* Header block */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
           <div className="h-px w-4 bg-stone-300" />
           <span className="text-[11px] font-light tracking-widest text-stone-400 uppercase">
-            Question 1 of 2
+            Question 2 of 2
           </span>
         </div>
 

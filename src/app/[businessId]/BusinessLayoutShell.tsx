@@ -6,7 +6,6 @@ import { AnimatePresence } from 'framer-motion';
 import ProgressBar from '@/features/flow/components/ProgressBar';
 import { progressValue } from '@/features/flow/utils/progressValue';
 import type { ScreenId } from '@/features/flow/types';
-import Footer from '@/features/flow/components/Footer';
 
 function getScreenId(pathname: string): ScreenId | null {
   const segment = pathname.split('/').pop();
@@ -34,7 +33,7 @@ export default function BusinessLayoutShell({
 
   if (screenId === 'screen-0') {
     return (
-      <div className="bg-cream flex h-dvh flex-col px-12">
+      <div className="bg-cream flex h-dvh flex-col px-8 py-6">
         <AnimatePresence mode="wait">
           <div
             key={pathname}
@@ -43,13 +42,12 @@ export default function BusinessLayoutShell({
             {children}
           </div>
         </AnimatePresence>
-        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="bg-cream flex h-dvh flex-col px-12">
+    <div className="bg-cream flex h-dvh flex-col px-8 py-6">
       <ProgressBar value={progress} />
       <AnimatePresence mode="wait">
         <div
@@ -59,7 +57,6 @@ export default function BusinessLayoutShell({
           {children}
         </div>
       </AnimatePresence>
-      <Footer />
     </div>
   );
 }

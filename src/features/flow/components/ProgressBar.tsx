@@ -10,7 +10,7 @@ export default function ProgressBar({ value }: Props) {
   const showLabels = step > 0;
 
   return (
-    <div className="flex items-center gap-3 py-8">
+    <div className="flex items-center gap-3">
       {/* Left label — blank on welcome screen */}
       <span className="w-12 shrink-0 text-xs text-stone-500 uppercase">
         {showLabels ? `${step} of 5` : ''}
