@@ -12,7 +12,7 @@ export default function Screen5High({ businessId }: { businessId: string }) {
   const { flow, setFlow } = useFlow();
   const business = getBusinessById(businessId);
 
-  const [count, setCount] = React.useState(5);
+  const [count, setCount] = React.useState(8);
   const [cancelled, setCancelled] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
 
@@ -94,16 +94,18 @@ export default function Screen5High({ businessId }: { businessId: string }) {
           <ArrowRight className="size-5" />
         </button>
 
-        <button
-          disabled={cancelled}
-          onClick={() => {
-            setCancelled(true);
-            setFlow({ googleRedirectTaken: false });
-          }}
-          className="cursor-pointer text-sm font-light tracking-wider text-stone-400 underline underline-offset-2 hover:text-stone-500"
-        >
-          Prefer not to? That&apos;s completely fine.
-        </button>
+        {!cancelled && (
+          <button
+            disabled={cancelled}
+            onClick={() => {
+              setCancelled(true);
+              setFlow({ googleRedirectTaken: false });
+            }}
+            className="cursor-pointer text-sm font-light tracking-wider text-stone-400 underline underline-offset-2 hover:text-stone-500"
+          >
+            Prefer not to? That&apos;s completely fine.
+          </button>
+        )}
       </div>
     </motion.div>
   );

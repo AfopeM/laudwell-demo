@@ -12,6 +12,6 @@ export const SCREEN_2_QUESTION = 'How would you describe the service to a friend
 export const SCREEN_2_OPTIONS = [
   'Professional and reliable',
   'Warm and easy to deal with',
-  'Fast and fair — no messing around',
-  "Honestly? Just use them. You won't regret it",
+  'Fast and fair, no messing around',
+  "Honestly? One of the best I've used.",
 ] as const;

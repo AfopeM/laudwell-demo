@@ -37,7 +37,7 @@ test.describe('Critical path — High rater (full flow)', () => {
 
     // Screen 5 — Google redirect variant
     await expect(page).toHaveURL(`${BASE}/screen-5`);
-    await expect(page.getByText('Your review has been copied')).toBeVisible();
+    await expect(page.getByText('Your review is ready to copy')).toBeVisible();
     await expect(page.getByText(/Heading to Google in/)).toBeVisible();
 
     // Opt out of redirect

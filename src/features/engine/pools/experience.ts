@@ -3,37 +3,37 @@ import type { Tone } from '../types';
 export const experiencePool: Record<string, Record<Tone, string[]>> = {
   'experience.transparent': {
     warm: [
-      'They were completely upfront about everything — costs, timeline, what to expect. No guessing games.',
-      'No hidden surprises. Everything was explained clearly before any work started, which I genuinely appreciated.',
-      'The honesty stood out. They told me exactly what was needed and why, without any fluff.',
+      'They told me exactly what was needed before touching anything. No guessing or surprise charges at the end.',
+      "The quote they gave me was the price I paid. That's not something I take for granted.",
+      "They were completely upfront about what the job involved and what it would cost. I didn't feel like I was being managed.",
     ],
     reassuring: [
-      'Full transparency throughout — pricing, process, what they found. Nothing was left unclear.',
-      'Everything was explained plainly before they started. No vague estimates, no surprise charges at the end.',
-      'You always knew exactly where things stood. That kind of clarity is genuinely reassuring.',
+      'They were fully transparent throughout. They told me what they found, what it would take to fix. Everything was clearly laid out.',
+      'They explained every part of the job before they started it. I always knew exactly what was going on.',
+      "Unlike other places they didn't hit me with vague estimates, the number they quoted was the number I paid.",
     ],
     conversational: [
-      "Straight with me from the start — here's what's needed, here's what it'll cost, here's when it'll be done. Brilliant.",
-      'No smoke and mirrors. Just honest, clear communication. Rare, and massively appreciated.',
-      'Actually told me what was going on rather than just cracking on with it. Really liked that.',
+      'They told me straight up what the problem was and what it would cost to fix. No padding or upselling.',
+      "They asked before doing anything extra. They didn't just add it to the bill and hope I wouldn't notice.",
+      'I was quoted a price and they stuck to it. I know that sounds basic, but it means a lot.',
     ],
   },
 
   'experience.smooth': {
     warm: [
-      'The whole thing was seamless from start to finish — from the first contact right through to the end.',
-      'Everything flowed so naturally. No friction, no confusion, just a really easy experience.',
-      'From the first contact to the job being done, every step was handled well.',
+      'From the first call to the job being finished, everything just ran cleanly, no hiccups.',
+      'Booking them was easy, and so was dealing with them on the day of the job. The whole thing was genuinely stress-free.',
+      "They made every step straightforward. They told me what to expect, and didn't change things around last minute.",
     ],
     reassuring: [
-      'The whole process was clearly structured and well-run. Every step was explained and executed cleanly.',
-      'No rough edges anywhere. Exactly the kind of organised operation you want.',
-      'Everything was well-coordinated — nothing felt improvised or left to chance.',
+      'Nothing they did felt rushed, their whole process was clear and organised.',
+      'They also showed up on time with everything they needed. No wasted trips or excuses about having to reorder parts.',
+      'I never had to reschedule anything or waste half a day waiting for them to finish the job.',
     ],
     conversational: [
-      'The whole thing just... ran smoothly. No hiccups, no awkward moments, nothing to complain about.',
-      'Completely hassle-free from start to finish. More businesses should work this way.',
-      "Easy to book, easy to deal with, easy everything. Stress-free — and that's not something I say often.",
+      'I really have nothing to complain about. The whole process just ran smoothly.',
+      'Their service was easy to book, they showed up did the job and left. I wish more companies were like this.',
+      "I didn't have to chase anyone or rebook. They just handled it.",
     ],
   },
 };

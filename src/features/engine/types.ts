@@ -1,6 +1,6 @@
 export type Tone = 'warm' | 'reassuring' | 'conversational';
 export type Length = 'short' | 'medium' | 'long';
-export type Connector = 'period' | 'also' | 'additionally' | 'whatsMore';
+export type Connector = 'period' | 'and' | 'plus' | 'onTopOfThat';
 
 export type PoolKey =
   | 'people.warm'

@@ -10,7 +10,7 @@ test.describe('Screen 5 — High rater (Google redirect)', () => {
   });
 
   test('shows confirmation copy and countdown', async ({ page }) => {
-    await expect(page.getByText('Your review has been copied')).toBeVisible();
+    await expect(page.getByText('Your review is ready to copy')).toBeVisible();
     await expect(page.getByText(/Heading to Google in/)).toBeVisible();
   });
 
@@ -21,7 +21,7 @@ test.describe('Screen 5 — High rater (Google redirect)', () => {
     await expect(page.getByText(/Heading to Google in/)).not.toBeVisible();
 
     // The opt-out link itself also disappears (component hides it after cancel)
-    await expect(page.getByText('Prefer not to?')).not.toBeVisible();
+    await expect(page.getByRole('button', { name: /Prefer not to/i })).not.toBeVisible();
   });
 
   test('"Take me there" button is visible', async ({ page }) => {
@@ -54,7 +54,7 @@ test.describe('Screen 5 — Low rater (thank you)', () => {
     const link = page.getByRole('link', { name: 'Leave a Google review' });
     await expect(link).toHaveAttribute(
       'href',
-      'https://www.google.com/maps/place/GEXR+Extreme+Exteriors/@43.8735361,-78.9523386,17z/data=!4m8!3m7!1s0x89d5b08f7a0585e5:0x6fd758f358e95ae0!8m2!3d43.8735361!4d-78.9497637!9m1!1b1!16s%2Fg%2F1tz96r0m?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D',
+      'https://www.google.com/search?sxsrf=ANbL-n63wEpd3wQCSPES9oSngVk0qGmrzg:1779405977950&si=AL3DRZHrmvnFAVQPOO2Bzhf8AX9KZZ6raUI_dT7DG_z0kV2_x6QEogh3gMtbWg4oWFqG6ue9qkj9dcW4IXILGrr5fdBa04-6_fm3PSut4WfHz5520Uib94iZJveAsVPa7-2BKVi2sXnjm87SG-WUJPbGJSvEsH4sDw%3D%3D&q=GEXR+Extreme+Exteriors+Reviews#lrd=0x89d5b08f7a0585e5:0x6fd758f358e95ae0,3,,,,',
     );
   });
 

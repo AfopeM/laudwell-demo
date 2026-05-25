@@ -22,7 +22,7 @@ const Q2_OPTIONS = [
   'Professional and reliable',
   'Warm and easy to deal with',
   'Fast and fair — no messing around',
-  "Honestly? Just use them. You won't regret it",
+  "Honestly? One of the best I've used.",
 ] as const;
 
 const ALL_COMBINATIONS = Q1_OPTIONS.flatMap((q1) => Q2_OPTIONS.map((q2) => ({ q1, q2 })));
@@ -51,13 +51,12 @@ describe('generateReview — output uniqueness', () => {
     };
     const outputs = Array.from({ length: 10 }, () => generateReview(input));
     const unique = new Set(outputs);
-    // Allow a tiny tolerance (1 collision in 10) given minimum pool depth.
     expect(unique.size).toBeGreaterThanOrEqual(9);
   });
 });
 
 // ---------------------------------------------------------------------------
-// Length variants — component count via buildParts (not string parsing)
+// Length variants — component count via buildParts
 // ---------------------------------------------------------------------------
 
 describe('generateReview — length variants', () => {
@@ -65,11 +64,6 @@ describe('generateReview — length variants', () => {
     q1Answer: 'The people I dealt with were genuinely great',
     q2Answer: 'Professional and reliable',
   };
-
-  it('short produces exactly 3 components', () => {
-    const parts = buildParts(baseInput, { length: 'short' });
-    expect(parts).toHaveLength(3);
-  });
 
   it('medium produces exactly 4 components', () => {
     const parts = buildParts(baseInput, { length: 'medium' });
@@ -83,7 +77,7 @@ describe('generateReview — length variants', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Connector variants — each non-period connector appears in output
+// Connector variants — each connector appears correctly in output
 // ---------------------------------------------------------------------------
 
 describe('generateReview — connector variants', () => {
@@ -92,24 +86,31 @@ describe('generateReview — connector variants', () => {
     q2Answer: 'Warm and easy to deal with',
   };
 
-  it('connector "also" inserts "Also,"', () => {
-    const result = generateReview(input, { connector: 'also', length: 'medium' });
-    expect(result).toContain('Also,');
+  it('connector "and" inserts "And"', () => {
+    const result = generateReview(input, { connector: 'and', length: 'medium' });
+    expect(result).toContain('And');
   });
 
-  it('connector "additionally" inserts "Additionally,"', () => {
-    const result = generateReview(input, { connector: 'additionally', length: 'medium' });
-    expect(result).toContain('Additionally,');
+  it('connector "plus" inserts "Plus,"', () => {
+    const result = generateReview(input, { connector: 'plus', length: 'medium' });
+    expect(result).toContain('Plus,');
   });
 
-  it('connector "whatsMore" inserts "What\'s more,"', () => {
-    const result = generateReview(input, { connector: 'whatsMore', length: 'medium' });
-    expect(result).toContain("What's more,");
+  it('connector "onTopOfThat" inserts "On top of that,"', () => {
+    const result = generateReview(input, { connector: 'onTopOfThat', length: 'medium' });
+    expect(result).toContain('On top of that,');
   });
 
   it('connector "period" inserts no transition word', () => {
     const result = generateReview(input, { connector: 'period', length: 'medium' });
-    expect(result).not.toMatch(/Also,|Additionally,|What's more,/);
+    expect(result).not.toMatch(/And |Plus,|On top of that,/);
+  });
+
+  it('connector lowercases the first word of the closing phrase', () => {
+    const result = generateReview(input, { connector: 'and', length: 'medium' });
+    // After "And" the next character should be a lowercase letter
+    const match = result.match(/And (.)/);
+    expect(match?.[1]).toMatch(/[a-z]/);
   });
 });
 
