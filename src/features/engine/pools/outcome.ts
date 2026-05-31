@@ -3,37 +3,37 @@ import type { Tone } from '../types';
 export const outcomePool: Record<string, Record<Tone, string[]>> = {
   'outcome.quality': {
     warm: [
-      'The work made a real difference came in with a problem and left without one.',
-      'The results have been real and lasting. This is what quality work actually looks like.',
-      'Did exactly what they said they would. The quality speaks for itself.',
+      'The work itself was done to a really high standard. You can tell the difference when something has been done properly.',
+      // 'The results speak for themselves. Whatever the problem was, it got fixed and fixed well.',
+      'The quality of the work was exactly what I was hoping for.',
     ],
     reassuring: [
-      'The work was solid and well-explained I understood what was being done and why at every stage.',
-      'Left with the problem sorted and a clear understanding of what had been done. Exactly what you want.',
-      "The outcome was exactly what I'd hoped for. Competent, thorough, and reliable.",
+      // 'The work was thorough and well-executed. I understood what had been done and why at every step.',
+      // 'Everything was completed to a high standard and explained clearly. Exactly what a good outcome looks like.',
+      // 'Solid, competent work from start to finish. The kind of result that gives you real confidence.',
     ],
     conversational: [
-      "It actually worked. Which sounds obvious but genuinely isn't always a given really impressed.",
-      "Came in with a problem, left without one. That's honestly all you want.",
-      'Could tell the difference straight away. Really, really happy with the result.',
+      // "The work was just done properly. Sounds simple, but it's not always a given.",
+      // "Came in with a problem, left without one. Can't really ask for more than that.",
+      "The results were noticeably good. Not sure what they did I dont think I'll be having any issues any time soon.",
     ],
   },
 
   'outcome.enthusiastic': {
     warm: [
-      "Can't recommend these people highly enough. If you're even considering it just go.",
-      "One of the best experiences I've had with any business in a long time. Don't hesitate.",
-      "I've already told people about them. Genuinely outstanding from start to finish.",
+      "I really can't recommend them highly enough. If you're on the fence, just go ahead and book it.",
+      "One of the genuinely good experiences I've had with any kind of home service in a long time.",
+      "I've already passed their details on to a couple of people. That's usually how I know something was actually worth it.",
     ],
     reassuring: [
-      'Every aspect of the experience exceeded my expectations. Would recommend without any reservations.',
-      "If you're looking for somewhere you can genuinely trust, this is it. Exceptional across the board.",
-      'This is the standard every business should be held to. Outstanding in every respect.',
+      "Every part of the experience exceeded what I was expecting. I'd recommend them without any reservations.",
+      "If you're looking for somewhere you can trust to do the job properly, this is it.",
+      "I'd go back without hesitation. Everything about the experience was exactly right.",
     ],
     conversational: [
-      "Just use them, seriously you'll thank yourself for it.",
-      "I don't throw around five-star reviews lightly this one was completely, completely earned.",
-      'No notes. None. Best experience I could have asked for.',
+      "Just genuinely impressed. Didn't see that coming but very glad I used them.",
+      'No complaints at all. Which honestly is the best thing I can say.',
+      "I was telling people about it the same week. That's how good it was.",
     ],
   },
 };

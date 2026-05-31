@@ -3,7 +3,6 @@ import { generateReview, buildParts, validatePoolDepth } from '@/features/engine
 import { peoplePool } from '@/features/engine/pools/people';
 import { experiencePool } from '@/features/engine/pools/experience';
 import { outcomePool } from '@/features/engine/pools/outcome';
-import { openingPool } from '@/features/engine/pools/opening';
 import { closingPool } from '@/features/engine/pools/closing';
 import type { Tone } from '@/features/engine/types';
 
@@ -22,7 +21,7 @@ const Q2_OPTIONS = [
   'Professional and reliable',
   'Warm and easy to deal with',
   'Fast and fair — no messing around',
-  "Honestly? One of the best I've used.",
+  "Honestly? Just use them. You won't regret it",
 ] as const;
 
 const ALL_COMBINATIONS = Q1_OPTIONS.flatMap((q1) => Q2_OPTIONS.map((q2) => ({ q1, q2 })));
@@ -51,12 +50,18 @@ describe('generateReview — output uniqueness', () => {
     };
     const outputs = Array.from({ length: 10 }, () => generateReview(input));
     const unique = new Set(outputs);
+    // Allow a tiny tolerance (1 collision in 10) given minimum pool depth.
     expect(unique.size).toBeGreaterThanOrEqual(9);
   });
 });
 
 // ---------------------------------------------------------------------------
-// Length variants — component count via buildParts
+// Length variants — component count via buildParts (not string parsing)
+//
+// Opening pool removed — reviews start with the first middle phrase.
+//   short  → [q1Phrase, closing]                        = 2 components
+//   medium → [q1Phrase, q2Phrase, closing]              = 3 components
+//   long   → [q1Phrase, q2Phrase, thirdPhrase, closing] = 4 components
 // ---------------------------------------------------------------------------
 
 describe('generateReview — length variants', () => {
@@ -65,19 +70,25 @@ describe('generateReview — length variants', () => {
     q2Answer: 'Professional and reliable',
   };
 
-  it('medium produces exactly 4 components', () => {
-    const parts = buildParts(baseInput, { length: 'medium' });
-    expect(parts).toHaveLength(4);
+  it('short produces exactly 2 components', () => {
+    const parts = buildParts(baseInput, { length: 'short' });
+    expect(parts).toHaveLength(2);
   });
 
-  it('long produces exactly 5 components', () => {
+  it('medium produces exactly 3 components', () => {
+    const parts = buildParts(baseInput, { length: 'medium' });
+    expect(parts).toHaveLength(3);
+  });
+
+  it('long produces exactly 4 components', () => {
     const parts = buildParts(baseInput, { length: 'long' });
-    expect(parts).toHaveLength(5);
+    expect(parts).toHaveLength(4);
   });
 });
 
 // ---------------------------------------------------------------------------
-// Connector variants — each connector appears correctly in output
+// Connector variants — each non-period connector appears in output
+// Connector type: 'period' | 'and' | 'plus' | 'also'
 // ---------------------------------------------------------------------------
 
 describe('generateReview — connector variants', () => {
@@ -86,9 +97,9 @@ describe('generateReview — connector variants', () => {
     q2Answer: 'Warm and easy to deal with',
   };
 
-  it('connector "and" inserts "And"', () => {
-    const result = generateReview(input, { connector: 'and', length: 'medium' });
-    expect(result).toContain('And');
+  it('connector "also" inserts "Also,"', () => {
+    const result = generateReview(input, { connector: 'also', length: 'medium' });
+    expect(result).toContain('Also,');
   });
 
   it('connector "plus" inserts "Plus,"', () => {
@@ -96,21 +107,14 @@ describe('generateReview — connector variants', () => {
     expect(result).toContain('Plus,');
   });
 
-  it('connector "onTopOfThat" inserts "On top of that,"', () => {
-    const result = generateReview(input, { connector: 'onTopOfThat', length: 'medium' });
-    expect(result).toContain('On top of that,');
+  it('connector "and" inserts "And,"', () => {
+    const result = generateReview(input, { connector: 'and', length: 'medium' });
+    expect(result).toContain('And,');
   });
 
   it('connector "period" inserts no transition word', () => {
     const result = generateReview(input, { connector: 'period', length: 'medium' });
-    expect(result).not.toMatch(/And |Plus,|On top of that,/);
-  });
-
-  it('connector lowercases the first word of the closing phrase', () => {
-    const result = generateReview(input, { connector: 'and', length: 'medium' });
-    // After "And" the next character should be a lowercase letter
-    const match = result.match(/And (.)/);
-    expect(match?.[1]).toMatch(/[a-z]/);
+    expect(result).not.toMatch(/Also,|Plus,|And,/);
   });
 });
 
@@ -120,12 +124,6 @@ describe('generateReview — connector variants', () => {
 
 const TONES: Tone[] = ['warm', 'reassuring', 'conversational'];
 const MIN_DEPTH = 3;
-
-describe('pool depth — opening', () => {
-  it.each(TONES)('opening.default[%s] has at least 3 phrases', (tone) => {
-    expect(openingPool['default'][tone].length).toBeGreaterThanOrEqual(MIN_DEPTH);
-  });
-});
 
 describe('pool depth — closing', () => {
   it.each(TONES)('closing.default[%s] has at least 3 phrases', (tone) => {

@@ -1,6 +1,5 @@
 import type { Tone, Length, Connector, EngineInput, EngineOutput, PoolKey } from '../types';
 import { mapAnswersToPools } from './mapping';
-import { openingPool } from '../pools/opening';
 import { peoplePool } from '../pools/people';
 import { experiencePool } from '../pools/experience';
 import { outcomePool } from '../pools/outcome';
@@ -11,12 +10,8 @@ import { closingPool } from '../pools/closing';
 // ---------------------------------------------------------------------------
 
 const TONES: Tone[] = ['warm', 'reassuring', 'conversational'];
-
-// Short removed — a 3-part review skips Q2 entirely, wasting the user's
-// second answer. Medium and long both include both Q-derived phrases.
-const LENGTHS: Length[] = ['medium', 'long'];
-
-const CONNECTORS: Connector[] = ['period', 'and', 'plus', 'onTopOfThat'];
+const LENGTHS: Length[] = ['short', 'medium', 'long'];
+const CONNECTORS: Connector[] = ['period', 'also', 'plus', 'and'];
 
 // When the long length needs a third middle component that Q1/Q2 didn't cover,
 // fall back to a representative key for that component type.
@@ -45,11 +40,11 @@ function getComponentType(poolKey: PoolKey): 'people' | 'experience' | 'outcome'
 }
 
 /**
- * For the long length, find the one component type not represented by either
- * Q-derived pool key and return the fallback key for it.
+ * For the long length, determine which component type is not yet represented
+ * by the two Q-derived pool keys and return a fallback key for it.
  *
- * There are exactly 3 types and at most 2 can be occupied by Q1/Q2, so the
- * loop always finds a match — no random fallback needed.
+ * If Q1 and Q2 are the same type (e.g. both people), one of the other two
+ * types is picked at random.
  */
 function getThirdPoolKey(q1Pool: PoolKey, q2Pool: PoolKey): PoolKey {
   const q1Type = getComponentType(q1Pool);
@@ -62,9 +57,9 @@ function getThirdPoolKey(q1Pool: PoolKey, q2Pool: PoolKey): PoolKey {
     }
   }
 
-  // Unreachable: with 3 types and at most 2 occupied, the loop always returns.
-  // TypeScript requires an explicit return here.
-  return TYPE_FALLBACK['outcome'];
+  // Q1 and Q2 share a type — pick randomly from the other two.
+  const uncovered = allTypes.filter((t) => t !== q1Type);
+  return TYPE_FALLBACK[pick(uncovered)];
 }
 
 /**
@@ -92,13 +87,8 @@ function getPhrase(poolKey: PoolKey, tone: Tone): string {
 
 /**
  * Join an ordered array of phrases using the selected connector style.
- *
- * "period" — phrases separated by a space; each already ends with punctuation.
- * Other connectors — insert a transition word before the closing phrase only.
- *
- * When a connector is used, the closing phrase's first character is lowercased
- * so it reads as a continuation rather than a new sentence. Example:
- *   "...great people. And saved their number." (not "...And Saved their number.")
+ * "period" = each phrase separated by a space (phrases already end with punctuation).
+ * The other three styles insert a transition word before the closing phrase only.
  */
 function joinWithConnector(parts: string[], connector: Connector): string {
   if (parts.length === 0) return '';
@@ -108,19 +98,14 @@ function joinWithConnector(parts: string[], connector: Connector): string {
   }
 
   const connectorText: Record<Exclude<Connector, 'period'>, string> = {
-    and: 'And',
+    also: 'Also,',
     plus: 'Plus,',
-    onTopOfThat: 'On top of that,',
+    and: 'And,',
   };
 
   const body = parts.slice(0, -1).join(' ');
   const closing = parts[parts.length - 1];
-
-  // Lowercase the first character so the closing reads as a continuation,
-  // not a new capitalised sentence after the connector word.
-  const adjustedClosing = closing.charAt(0).toLowerCase() + closing.slice(1);
-
-  return `${body} ${connectorText[connector]} ${adjustedClosing}`;
+  return `${body} ${connectorText[connector]} ${closing}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -137,13 +122,8 @@ const MIN_DEPTH = 3;
 export function validatePoolDepth(): void {
   const tones: Tone[] = ['warm', 'reassuring', 'conversational'];
 
+  // Closing pool (keyed by 'default')
   for (const tone of tones) {
-    const openPhrases = openingPool['default'][tone];
-    if (!openPhrases || openPhrases.length < MIN_DEPTH) {
-      throw new Error(
-        `Pool depth violation: opening.default[${tone}] has ${openPhrases?.length ?? 0} phrases (min ${MIN_DEPTH})`,
-      );
-    }
     const closePhrases = closingPool['default'][tone];
     if (!closePhrases || closePhrases.length < MIN_DEPTH) {
       throw new Error(
@@ -152,6 +132,7 @@ export function validatePoolDepth(): void {
     }
   }
 
+  // Middle pools
   const middlePools: Array<[string, Record<string, Record<Tone, string[]>>]> = [
     ['people', peoplePool],
     ['experience', experiencePool],
@@ -176,6 +157,10 @@ export function validatePoolDepth(): void {
 // Public API
 // ---------------------------------------------------------------------------
 
+/**
+ * Optional overrides used in tests to pin tone, length, and connector to
+ * specific values without mocking Math.random globally.
+ */
 export interface EngineOverrides {
   tone?: Tone;
   length?: Length;
@@ -184,6 +169,11 @@ export interface EngineOverrides {
 
 /**
  * Build the ordered array of component phrases for a given input and overrides.
+ *
+ * Structure (no opening pool — reviews start mid-thought with a specific phrase):
+ *   short  → [q1Phrase, closing]                          — 2 components
+ *   medium → [q1Phrase, q2Phrase, closing]                — 3 components
+ *   long   → [q1Phrase, q2Phrase, thirdPhrase, closing]   — 4 components
  *
  * Exported so tests can assert on component count directly, without parsing
  * the assembled string — which breaks when phrases contain '. ' internally.
@@ -194,19 +184,22 @@ export function buildParts(input: EngineInput, overrides: EngineOverrides = {}):
   const tone = overrides.tone ?? pick(TONES);
   const length = overrides.length ?? pick(LENGTHS);
 
-  const opening = pick(openingPool['default'][tone]);
   const closing = pick(closingPool['default'][tone]);
   const q1Phrase = getPhrase(q1Pool, tone);
   const q2Phrase = getPhrase(q2Pool, tone);
 
+  if (length === 'short') {
+    return [q1Phrase, closing];
+  }
+
   if (length === 'medium') {
-    return [opening, q1Phrase, q2Phrase, closing];
+    return [q1Phrase, q2Phrase, closing];
   }
 
   // long — add a third middle component from the uncovered pool type
   const thirdPool = getThirdPoolKey(q1Pool, q2Pool);
   const thirdPhrase = getPhrase(thirdPool, tone);
-  return [opening, q1Phrase, q2Phrase, thirdPhrase, closing];
+  return [q1Phrase, q2Phrase, thirdPhrase, closing];
 }
 
 /**
